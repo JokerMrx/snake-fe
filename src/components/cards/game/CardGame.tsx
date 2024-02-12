@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import StarIcon from "../../../assets/icons/star-icon.svg?react";
 
-import { PAGE_GAMES } from "../../../config/dev.config";
+import { PAGE_GAMES } from "../../../constants";
 import { ICardGameProps } from "./card-game.types";
 
 const CardGame: FC<ICardGameProps> = ({

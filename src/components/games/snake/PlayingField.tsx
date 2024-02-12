@@ -2,8 +2,8 @@ import { FC, useState, useEffect, Fragment } from "react";
 
 import Food from "./Food";
 
-import { DIRECTION } from "../../constants";
-import { SNAKE_GAME } from "../../../data/games.data";
+import { DIRECTION, LOGIN_PAGE } from "../../../constants";
+import { GAME_NAME_SNAKE, SNAKE_GAME } from "../../../data/games.data";
 import {
   INITIAL_SNAKE_POSITION,
   TIME_UPDATE_GAME,
@@ -20,6 +20,8 @@ import {
   checkIntersectionCoordinates,
   generate2DCoordinate
 } from "../../../utils/coordinate.utils";
+import { getUserDataFromUserToken } from "../../../utils/user.utils";
+import { saveGameResult } from "../../../services/api/game.api";
 
 const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
   const [snakePosition, setSnakePosition] = useState(INITIAL_SNAKE_POSITION);
@@ -30,6 +32,10 @@ const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
   const [direction, setDirection] = useState<DirectionType>(DIRECTION.UP);
   const [snakeSpeed, setSnakeSpeed] = useState(TIME_UPDATE_GAME);
   const [currentScore, setCurrentScore] = useState(0); // variable responsible for updating the speed of the snake every 50 points
+
+  const userData = getUserDataFromUserToken();
+
+  if (!userData) window.location.href = LOGIN_PAGE;
 
   useEffect(() => {
     let updateInterval: number | undefined;
@@ -49,7 +55,6 @@ const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
   });
 
   const increaseSnakeSpeed = () => {
-    console.log({ snakeSpeed, MAX_SNAKE_SPEED });
     if (snakeSpeed > MAX_SNAKE_SPEED)
       setSnakeSpeed(prev => prev - CHANGE_SNAKE_SPEED);
   };
@@ -182,13 +187,19 @@ const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
     }
   };
 
-  const gameOver = () => {
+  const gameOver = async () => {
     resetScore();
     setDirection(DIRECTION.UP);
     setSnakePosition(INITIAL_SNAKE_POSITION);
     notificationGameOver();
     setSnakeSpeed(TIME_UPDATE_GAME);
     setCurrentScore(0);
+
+    await saveGameResult({
+      game_name: GAME_NAME_SNAKE,
+      score: score
+    }).then(res => res);
+
     register(false);
   };
 
@@ -265,12 +276,10 @@ const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
     if (isAteApple) {
       increaseScore(QUANTITY_SCORE_FOOD.APPLE);
       renderFood(FOOD.APPLE);
-    }
-    if (isAtePear) {
+    } else if (isAtePear) {
       increaseScore(QUANTITY_SCORE_FOOD.PEAR);
       renderFood(FOOD.PEAR);
-    }
-    if (isAteWatermelon) {
+    } else if (isAteWatermelon) {
       increaseScore(QUANTITY_SCORE_FOOD.WATERMELON);
       renderFood(FOOD.WATERMELON);
     } else {

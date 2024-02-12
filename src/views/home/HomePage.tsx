@@ -10,7 +10,7 @@ const HomePage = () => {
     <LayoutPage>
       <div className="mt-10">
         <h2 className="text-4xl text-center">Game List</h2>
-        <div className="mt-10">
+        <div className="mt-10 px-5 flex flex-wrap gap-4 justify-center md:justify-start">
           {GAMES?.map((game, index) => (
             <Fragment key={index}>
               <CardGame

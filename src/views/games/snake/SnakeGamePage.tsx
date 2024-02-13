@@ -1,11 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import LayoutPage from "../../../components/layout/LayoutPage";
 import Button from "../../../components/ui/buttons/button/Button";
 import PlayingField from "../../../components/games/snake/PlayingField";
+import { getUserDataFromUserToken } from "../../../utils/user.utils";
+import { LOGIN_PAGE } from "../../../constants";
 
 const SnakeGamePage = () => {
   const [isPlay, setPlay] = useState(false);
+
+  const navigate = useNavigate();
+
+  const userData = getUserDataFromUserToken();
+
+  if (!userData) navigate(LOGIN_PAGE);
 
   const handleClickPlay = () => {
     setPlay(!isPlay);

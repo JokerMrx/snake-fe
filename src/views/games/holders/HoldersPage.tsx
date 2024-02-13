@@ -1,4 +1,6 @@
 import { useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { IGameResult } from "../../../types/game.types";
 import LayoutPage from "../../../components/layout/LayoutPage";
 import { getHoldersGameResult } from "../../../services/api/game.api";
@@ -8,15 +10,17 @@ import TableRow from "../../../components/tables/TableRow";
 import TableColumn from "../../../components/tables/TableColumn";
 import Loader from "../../../components/ui/loader/Loader";
 import { getUserDataFromUserToken } from "../../../utils/user.utils";
-import { redirectToHomePage } from "../../../utils/page.utils";
+import { LOGIN_PAGE } from "../../../constants";
 
 const HoldersPage = () => {
   const [holders, setHolders] = useState<IGameResult[] | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   const userData = getUserDataFromUserToken();
 
-  if (!userData) redirectToHomePage();
+  if (!userData) navigate(LOGIN_PAGE);
 
   useEffect(() => {
     setLoading(true);

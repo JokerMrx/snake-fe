@@ -1,9 +1,8 @@
 import { FC, useState, useEffect, Fragment } from "react";
-import { useNavigate } from "react-router-dom";
 
 import Food from "./Food";
 
-import { DIRECTION, LOGIN_PAGE } from "../../../constants";
+import { DIRECTION } from "../../../constants";
 import { GAME_NAME_SNAKE, SNAKE_GAME } from "../../../data/games.data";
 import {
   INITIAL_SNAKE_POSITION,
@@ -21,7 +20,6 @@ import {
   checkIntersectionCoordinates,
   generate2DCoordinate
 } from "../../../utils/coordinate.utils";
-import { getUserDataFromUserToken } from "../../../utils/user.utils";
 import { saveGameResult } from "../../../services/api/game.api";
 
 const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
@@ -33,12 +31,6 @@ const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
   const [direction, setDirection] = useState<DirectionType>(DIRECTION.UP);
   const [snakeSpeed, setSnakeSpeed] = useState(TIME_UPDATE_GAME);
   const [currentScore, setCurrentScore] = useState(0); // variable responsible for updating the speed of the snake every 50 points
-
-  const navigate = useNavigate();
-
-  const userData = getUserDataFromUserToken();
-
-  if (!userData) navigate(LOGIN_PAGE);
 
   useEffect(() => {
     let updateInterval: number | undefined;

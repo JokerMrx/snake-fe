@@ -36,7 +36,6 @@ const AuthForm: FC<IAuthFormProps> = ({ formType, onSubmit }) => {
     const isSuccess = await onSubmit(formData).then(res => res);
 
     if (isSuccess) {
-      console.log("login");
       setFormData({ email: "", password: "" });
       window.location.href = "/";
     }

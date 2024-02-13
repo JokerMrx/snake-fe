@@ -1,4 +1,5 @@
 import { FC, useState, useEffect, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Food from "./Food";
 
@@ -33,9 +34,11 @@ const PlayingField: FC<IPlayingFieldProps> = ({ isPlay, register }) => {
   const [snakeSpeed, setSnakeSpeed] = useState(TIME_UPDATE_GAME);
   const [currentScore, setCurrentScore] = useState(0); // variable responsible for updating the speed of the snake every 50 points
 
+  const navigate = useNavigate();
+
   const userData = getUserDataFromUserToken();
 
-  if (!userData) window.location.href = LOGIN_PAGE;
+  if (!userData) navigate(LOGIN_PAGE);
 
   useEffect(() => {
     let updateInterval: number | undefined;

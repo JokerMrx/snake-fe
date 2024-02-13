@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 import { IUser } from "../types/user.types";
+import { redirectToHomePage } from "./page.utils";
 
 const TOKEN_KEY = "_token";
 
@@ -30,5 +31,5 @@ export const getUserDataFromUserToken = (): IUser | null => {
 export const logout = () => {
   removeUserToken();
 
-  window.location.href = "/";
+  redirectToHomePage();
 };

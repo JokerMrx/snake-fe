@@ -7,10 +7,16 @@ import Table from "../../../components/tables/Table";
 import TableRow from "../../../components/tables/TableRow";
 import TableColumn from "../../../components/tables/TableColumn";
 import Loader from "../../../components/ui/loader/Loader";
+import { getUserDataFromUserToken } from "../../../utils/user.utils";
+import { redirectToHomePage } from "../../../utils/page.utils";
 
 const HoldersPage = () => {
   const [holders, setHolders] = useState<IGameResult[] | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const userData = getUserDataFromUserToken();
+
+  if (!userData) redirectToHomePage();
 
   useEffect(() => {
     setLoading(true);
